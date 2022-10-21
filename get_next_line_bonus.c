@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 18:44:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/10/21 16:15:11 by gpasquet         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:22:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,22 @@ char	*boo_while(int fd, char *buf, char *line)
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static char		*buf;
+	static char		*buf[1024];
 
 	if (fd < 0 || read(fd, 0, 0))
 		return (NULL);
-	if (!buf)
+	if (!buf[fd])
 	{
-		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (!buf)
+		buf[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		if (!buf[fd])
 			return (NULL);
 	}
 	line = ft_calloc(2, sizeof(char));
 	if (!line)
 	{
-		free(buf);
+		free(buf[fd]);
 		return (NULL);
 	}
-	line = boo_while(fd, buf, line);
+	line = boo_while(fd, buf[fd], line);
 	return (line);
 }
